@@ -42,13 +42,31 @@ export const tag = (name, ...children) => {
 
   const safeChildren = children
     .map((child) => child instanceof HTMLElement ? child.cloneNode(true) :
-                    child instanceof Attr ? node.setAttributeNode(child.cloneNode()) :
+                    child instanceof Attr ? handleAttribute(node, child) :
                     child instanceof EventContainer ? node.addEventListener(child.type, child.fn) :
                     document.createTextNode(child))
     .filter((child) => child !== null && child !== undefined);
 
   node.replaceChildren(...safeChildren);
   return node;
+}
+
+/**
+ * Adds an attribute to a tag safely.
+ * @param {HTMLElement} node The HTML tag.
+ * @param {Attr} attribute The HTML attribute.
+ * @returns {undefined}
+ */
+const handleAttribute = (node, attribute) => {
+  if (node.hasAttribute(attribute.name)) {
+    const currentValue = node.getAttribute(attribute.name);
+    node.setAttribute(
+      attribute.name,
+      currentValue + ' ' + attribute.value,
+    );
+  } else {
+    node.setAttributeNode(attribute.cloneNode(true));
+  }
 }
 
 /**
@@ -164,6 +182,7 @@ export const main = (...x) => tag('main', ...x);
 export const search = (...x) => tag('search', ...x);
 export const footer = (...x) => tag('footer', ...x);
 export const header = (...x) => tag('header', ...x);
+export const caption = (...x) => tag('caption', ...x);
 
 export const id = (v) => attr('id', v);
 export const className = (v) => attr('class', v);
