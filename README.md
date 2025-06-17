@@ -8,7 +8,7 @@
   id("my-button"),
   onclick(() =&gt; alert("Hello, World!")),
 )</code></pre>
-</figure><button id="my-button">Click me!</button>
+</figure>
 <hr>
 <p>The library consists of 3 primary functions:</p>
 <dl>
@@ -64,7 +64,7 @@ const app = main(
 </table>
 <hr>
 <h2>Extended Example</h2>
-<p>This entire page is actually an example! But yea, <em>normally</em> I would not recommend writing your page like this
+<p><a href="https://mdvorak340.github.io/dots/">This</a> entire page is actually an example! But yea, <em>normally</em> I would not recommend writing your page like this
   — <code>dots</code> is intended to be used to write HTML procedurally, not declaratively.</p>
 <p>Here is the page source:</p>
 <figure>
@@ -173,6 +173,3 @@ if (document.readyState === 'loading') {
 }
 </code></pre>
 </figure>
-<footer>
-  <p>by Mozzie Dvorak</p>
-</footer>
