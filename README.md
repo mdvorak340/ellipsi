@@ -1,6 +1,6 @@
 <!-- OK i lied it's actually HTML -->
-<h1><code>dots</code>: an HTML Assembler</h1>
-<p><code>dots</code> is a simple, dependency-free JavaScript library that can be used to create HTML
+<h1><code class="fancy">dots</code>: an HTML Assembler</h1>
+<p><code class="fancy">dots</code> is a simple, dependency-free JavaScript library that can be used to create HTML
   content quickly.</p>
 <figure>
   <pre><code class="language-javascript">const myButton = button(
@@ -13,7 +13,7 @@
 <p>The library consists of 3 primary functions:</p>
 <dl>
   <dt><code class="language-javascript">tag(name, ...children)</code></dt>
-  <dd>The main function; used to create tags of the given name. The children can be other <code
+  <dd>The main function; used to create tags of the given name. The children can be either <code
       class="language-javascript">HTMLElement</code>s, attributes, event handlers, or plain strings.<figure>
       <pre><code class="language-javascript">tag("h1", "A Header")</code></pre>
       <pre><code class="language-javascript">tag("ul",
@@ -21,10 +21,11 @@
 )</code></pre>
     </figure>
   </dd>
-  <dt><code class="language-javascript">attr(key, value)</code></dt>
+  <dt><code class="language-javascript">attr(key, ...values)</code></dt>
   <dd>Used to create HTML attributes (<code class="language-javascript">Attr</code>s). Takes a simple key/value pair of
     strings.<figure>
       <pre><code class="language-javascript">attr("href", "https://www.spidersge.org")</code></pre>
+      <pre><code class="language-javascript">attr("class", "centered", "container")</code></pre>
     </figure>
   </dd>
   <dt><code class="language-javascript">on(event, function)</code></dt>
@@ -64,5 +65,5 @@ const app = main(
 </table>
 <hr>
 <h2>Extended Example</h2>
-<p><a href="https://mdvorak340.github.io/dots/">This</a> entire page is actually an example! But yea, <em>normally</em> I would not recommend writing your page like this
-  — <code>dots</code> is intended to be used to write HTML procedurally, not declaratively.</p>
+<p><a target="_blank" href="https://mdvorak340.github.io/dots">This</a> entire page is actually an example! But yea, <em>normally</em> I would not recommend writing your page like this
+  — <code class="fancy">dots</code> is intended to be used to write HTML procedurally, not declaratively.</p>
