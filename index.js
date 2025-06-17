@@ -74,7 +74,7 @@ const handleAttribute = (node, attribute) => {
  * for creating commmon attributes (see the example).  Due to namespace
  * restrictions, `class` is shortcuted as `className` and `for` as `forId`.
  * @param {string} key The attribute name.
- * @param {string} value The attribute value.
+ * @param {string[]} values The attribute value(s).
  * @returns {Attr} The attribute node.
  * @example
  * 
@@ -82,13 +82,14 @@ const handleAttribute = (node, attribute) => {
  *     const a1 = tag('a', 'An anchor tag', attr('href', 'https://example.com'));
  *     // Using built-in helper functions.
  *     const a2 = tag('a', 'An anchor tag', href('https://example.com'));
+ *     const a3 = tag('a', 'An anchor tag', rel('noopener', 'noreferrer'));
  *     // Defining custom helper functions.
  *     const download = (v) => attr('download', v);
- *     const a3 = tag('a', 'An anchor tag', download('some-file.txt'));
+ *     const a4 = tag('a', 'An anchor tag', download('some-file.txt'));
  */
-export const attr = (key, value) => {
+export const attr = (key, ...values) => {
   const node = document.createAttribute(key);
-  node.value = value;
+  node.value = values.join(' ');
   return node;
 }
 
@@ -184,15 +185,15 @@ export const footer = (...x) => tag('footer', ...x);
 export const header = (...x) => tag('header', ...x);
 export const caption = (...x) => tag('caption', ...x);
 
-export const id = (v) => attr('id', v);
-export const className = (v) => attr('class', v);
-export const style = (v) => attr('style', v);
-export const type = (v) => attr('type', v);
-export const href = (v) => attr('href', v);
-export const rel = (v) => attr('rel', v);
-export const target = (v) => attr('target', v);
-export const forId = (v) => attr('for', v);
-export const download = (v) => attr('download', v);
+export const id = (...v) => attr('id', ...v);
+export const className = (...v) => attr('class', ...v);
+export const style = (...v) => attr('style', ...v);
+export const type = (...v) => attr('type', ...v);
+export const href = (...v) => attr('href', ...v);
+export const rel = (...v) => attr('rel', ...v);
+export const target = (...v) => attr('target', ...v);
+export const forId = (...v) => attr('for', ...v);
+export const download = (...v) => attr('download', ...v);
 
 export const onclick = (fn) => on('click', fn);
 export const onchange = (fn) => on('change', fn);
