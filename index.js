@@ -162,6 +162,8 @@ export const u = (...x) => tag('u', ...x);
 export const ul = (...x) => tag('ul', ...x);
 export const main = (...x) => tag('main', ...x);
 export const search = (...x) => tag('search', ...x);
+export const footer = (...x) => tag('footer', ...x);
+export const header = (...x) => tag('header', ...x);
 
 export const id = (v) => attr('id', v);
 export const className = (v) => attr('class', v);
