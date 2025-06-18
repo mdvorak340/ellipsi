@@ -1,17 +1,11 @@
 {
-  "name": "@mdvorak340/dots",
+  "name": "shorthand",
   "version": "1.4.0",
   "description": "Simple HTML Tag assembler.",
-  "main": "dots.js",
+  "main": "shorthand.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mozzie Dvorak",
-  "license": "MIT",
-  "devDependencies": {
-    "webpack-cli": "^6.0.1"
-  },
-  "dependencies": {
-    "minify": "^14.0.0"
-  }
+  "license": "MIT"
 }
