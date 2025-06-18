@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ellipsi Example</title>
+  </head>
+  <body>
+    <script type="module">
+      import { h1, p, a, button, on } from './ellipsi.min.js'
+
+      const attrs = {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      }
+
+      const doc = [
+        h1('Ellipsi Demo'),
+        p('gay gay homosexual gay'),
+        button('meow', on('click', () => alert('mrow <3'))),
+        p(
+          "view ",
+          a('the sacred texts', { href: 'https://www.spidersge.org' }, attrs),
+        ),
+      ]
+
+      document.body.replaceChildren(...doc)
+    </script>
+  </body>
+</html>
