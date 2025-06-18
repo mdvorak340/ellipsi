@@ -1,6 +1,6 @@
-# Shorthand
+# Ellipsi
 
-`Shorthand` is a simple JavaScript library used to create HTML tags
+`Ellipsi` is a simple JavaScript library used to create HTML tags
 programmatically.
 
 ```js
@@ -11,9 +11,9 @@ const MyButton = button(
 )
 ```
 
-## Using Shorthand
+## Using Ellipsi
 
-`Shorthand` has one primary function: `tag(name, ...children)`.  This function
+`Ellipsi` has one primary function: `tag(name, ...children)`.  This function
 is used to create elements of the type `HTMLElement` with clean syntax.
 
 ```js
@@ -46,14 +46,14 @@ const MyForm = form(
 )
 ```
 
-## Installing Shorthand using `npm`
+## Installing Ellipsi using `npm`
 
-    npm install shorthand
+    npm install ellipsi
 
 Then, in your JavaScript module:
 
 ```js
-import { tag, on, h1, p /* et cetera */ } from 'shortcut.js'
+import { tag, on, h1, p /* et cetera */ } from 'ellipsi.js'
 ```
 
 ## Function Reference

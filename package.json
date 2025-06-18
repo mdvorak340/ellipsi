@@ -1,8 +1,8 @@
 {
-  "name": "shorthand",
+  "name": "ellipsi",
   "version": "2.0.0",
   "description": "Simple HTML Tag assembler.",
-  "main": "shorthand.js",
+  "main": "ellipsi.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
