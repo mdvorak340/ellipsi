@@ -1,6 +1,6 @@
 {
   "name": "@mdvorak340/dots",
-  "version": "1.3.5",
+  "version": "1.4.0",
   "description": "Simple HTML Tag assembler.",
   "main": "dots.js",
   "scripts": {
