@@ -4,14 +4,14 @@
  * @param {string} name The tag name.
  * @param {...string | HTMLElement | Attr | EventListener | Object} children
  * The children of the tag.  Handles different types differently:
- * 
+ *
  * 1. `string`s are converted to `Text` and appended to the tag.
  * 2. `HTMLElement`s are appended as is (Not cloned).
  * 3. `Attr`s are cloned and then attached to the tag itself.
  * 4. `EventListener`s are attached to the tag itself.
  * 5. `Object`s are parsed as lists of HTML attribute key/value pairs and
  *    attached to the tag itself.
- * 
+ *
  * @returns {HTMLElement} The created HTML tag.
  */
 export const tag = (name, ...children) => {
@@ -154,3 +154,6 @@ export const search = (...x) => tag('search', ...x)
 export const footer = (...x) => tag('footer', ...x)
 export const header = (...x) => tag('header', ...x)
 export const caption = (...x) => tag('caption', ...x)
+export const output = (...x) => tag('output', ...x)
+export const details = (...x) => tag('details', ...x)
+export const summary = (...x) => tag('summary', ...x)
