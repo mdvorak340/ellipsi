@@ -53,7 +53,7 @@ const MyForm = form(
 Then, in your JavaScript module:
 
 ```js
-import { tag, on, h1, p /* et cetera */ } from 'ellipsi.js'
+import { tag, on, h1, p /* et cetera */ } from 'ellipsi'
 ```
 
 ## Function Reference
