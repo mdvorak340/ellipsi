@@ -36,30 +36,33 @@ textarea {
   width: 100%;
   display: block;
   margin-block: 0.5rem;
+  font: 0.8rem monospace;
+  padding: 0.2rem;
 }
 
 textarea {
   min-height: 5rem;
+  resize: vertical;
 }
 
 input[type="checkbox"] + label {
-  margin-left:1ch;
+  margin-left: 1ch;
 }
 
 ul.inline {
-  margin:0;
+  margin: 0;
 }
 
 ul.inline li {
-  display:inline;
+  display: inline;
 }
 
 ul.inline li + li::before {
-  content:' ∘ ';
+  content: " ∘ ";
 }
 
 button {
-  padding:0.5rem;
+  padding: 0.5rem;
 }
 
 form.profile {
@@ -71,8 +74,8 @@ form.profile {
 }
 
 form.profile fieldset:nth-child(2) {
-  display:grid;
-  gap:1rem;
+  display: grid;
+  gap: 1rem;
   grid-template:
     "out" 1fr
     "btn" min-content

@@ -4,7 +4,6 @@
   "description": "Simple HTML Tag assembler.",
   "main": "ellipsi.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "mini": "npx minify ellipsi.js > ellipsi.min.js"
   },
   "author": "Mozzie Dvorak",
