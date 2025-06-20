@@ -1,0 +1,80 @@
+* {
+  box-sizing: border-box;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  max-width: 65ch;
+  min-height: 100vh;
+  margin-inline: auto;
+  padding: 1rem;
+  line-height: 1.5;
+}
+
+a {
+  color: #44c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline 1px solid currentColor;
+}
+
+fieldset {
+  padding: 1rem;
+}
+
+fieldset,
+p {
+  margin-block: 1rem;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  display: block;
+  margin-block: 0.5rem;
+}
+
+textarea {
+  min-height: 5rem;
+}
+
+input[type="checkbox"] + label {
+  margin-left:1ch;
+}
+
+ul.inline {
+  margin:0;
+}
+
+ul.inline li {
+  display:inline;
+}
+
+ul.inline li + li::before {
+  content:' ∘ ';
+}
+
+button {
+  padding:0.5rem;
+}
+
+form.profile {
+  display: grid;
+  gap: 1rem;
+  grid-template:
+    "in out" 1fr
+    / 1fr 1fr;
+}
+
+form.profile fieldset:nth-child(2) {
+  display:grid;
+  gap:1rem;
+  grid-template:
+    "out" 1fr
+    "btn" min-content
+    / 1fr;
+}
