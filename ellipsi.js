@@ -21,8 +21,8 @@ export const tag = (name, ...children) => {
     .map((child) => child instanceof HTMLElement ? child :
                     child instanceof Attr ? handleAttributeNode(htmlTag, child) :
                     child instanceof EventListener ? htmlTag.addEventListener(child.type, child.callback) :
-                    typeof child === 'object' ? handleAttributeMap(htmlTag, child) :
-                    document.createTextNode(child))
+                    typeof child === 'string' ? document.createTextNode(child) :
+                    handleAttributeMap(htmlTag, child))
     .filter((child) => child !== null && child !== undefined)
 
   htmlTag.replaceChildren(...safeChildren)
@@ -51,6 +51,10 @@ const handleAttributeNode = (htmlTag, attrNode) => {
  * @returns {undefined}
  */
 const handleAttributeMap = (htmlTag, attrMap) => {
+  if (attrMap === null || undefined) {
+    return;
+  }
+
   Object.keys(attrMap).forEach((key) => {
     if (htmlTag.hasAttribute(key)) {
       const currentValue = htmlTag.getAttribute(key)
