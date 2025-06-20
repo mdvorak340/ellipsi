@@ -51,7 +51,7 @@ const handleAttributeNode = (htmlTag, attrNode) => {
  * @returns {undefined}
  */
 const handleAttributeMap = (htmlTag, attrMap) => {
-  if (attrMap === null || undefined) {
+  if (attrMap === null || attrMap === undefined) {
     return;
   }
 
