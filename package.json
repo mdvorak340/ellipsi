@@ -6,9 +6,20 @@
   "scripts": {
     "mini": "npx minify ellipsi.js > ellipsi.min.js"
   },
-  "author": "Mozzie Dvorak",
+  "author": "Mozzie Dvorak <mdvorak.personal@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "minify": "^14.0.0"
+  },
+  "keywords": [
+    "HTMLElement"
+  ],
+  "homepage": "https://github.com/mdvorak340/ellipsi#readme",
+  "bugs": {
+    "email": "mdvorak.personal@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdvorak340/ellipsi"
   }
 }
