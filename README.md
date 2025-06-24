@@ -46,14 +46,21 @@ const MyForm = form(
 )
 ```
 
-## Installing Ellipsi using `npm`
+## Installing Ellipsi
+
+Install the library using `npm` with:
 
     npm install ellipsi
+
+Alternatively, download the library directly from
+[here](https://raw.githubusercontent.com/mdvorak340/ellipsi/refs/heads/main/ellipsi.js)
+and the minimized version from
+[here](https://raw.githubusercontent.com/mdvorak340/ellipsi/refs/heads/main/ellipsi.min.js).
 
 Then, in your JavaScript module:
 
 ```js
-import { tag, on, h1, p /* et cetera */ } from 'ellipsi'
+import { tag, on, h1, p /* et cetera */ } from 'ellipsi.js'
 // Minimized version:
 import { tag, on, h1, p /* et cetera */ } from 'ellipsi.min.js'
 ```
