@@ -21,8 +21,10 @@ export const tag = (name, ...children) => {
     .map((child) => child instanceof HTMLElement ? child :
                     child instanceof Attr ? handleAttributeNode(htmlTag, child) :
                     child instanceof EventListener ? htmlTag.addEventListener(child.type, child.callback) :
+                    child?.constructor === Object ? handleAttributeObject(htmlTag, child) :
                     typeof child === 'string' ? document.createTextNode(child) :
-                    handleAttributeMap(htmlTag, child))
+                    child === null || child === undefined ? null :
+                    console.warn('unknown type given to function "tag": ', child))
     .filter((child) => child !== null && child !== undefined)
 
   htmlTag.replaceChildren(...safeChildren)
@@ -40,27 +42,26 @@ const handleAttributeNode = (htmlTag, attrNode) => {
     const currentValue = htmlTag.getAttribute(attrNode.name)
     htmlTag.setAttribute(attrNode.name, currentValue + ' ' + attrNode.value)
   } else {
-    htmlTag.setAttributeNode(attrNode.cloneNode(true))
+    htmlTag.setAttributeNode(attrNode.cloneNode())
   }
 }
 
 /**
  * Adds attributes to a tag from a JSON object.
  * @param {HTMLElement} htmlTag The HTML tag.
- * @param {Object} attrMap The attributes as a JSON object.
+ * @param {Object} attrObj The attributes as a JSON object.
  * @returns {undefined}
  */
-const handleAttributeMap = (htmlTag, attrMap) => {
-  if (attrMap === null || attrMap === undefined) {
-    return;
-  }
+const handleAttributeObject = (htmlTag, attrObj) => {
+  Object.keys(attrObj).forEach((key) => {
+    const newValue = attrObj[key] instanceof Array ? attrObj[key].join(' ') :
+                     attrObj[key]
 
-  Object.keys(attrMap).forEach((key) => {
     if (htmlTag.hasAttribute(key)) {
       const currentValue = htmlTag.getAttribute(key)
-      htmlTag.setAttribute(key, currentValue + ' ' + attrMap[key])
+      htmlTag.setAttribute(key, currentValue + ' ' + newValue)
     } else {
-      htmlTag.setAttribute(key, attrMap[key])
+      htmlTag.setAttribute(key, newValue)
     }
   })
 }
