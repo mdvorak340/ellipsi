@@ -45,10 +45,6 @@ textarea {
   resize: vertical;
 }
 
-input[type="checkbox"] + label {
-  margin-left: 1ch;
-}
-
 ul.inline {
   margin: 0;
 }
@@ -65,7 +61,7 @@ button {
   padding: 0.5rem;
 }
 
-form.profile {
+form.profile-form {
   display: grid;
   gap: 1rem;
   grid-template:
@@ -73,11 +69,19 @@ form.profile {
     / 1fr 1fr;
 }
 
-form.profile fieldset:nth-child(2) {
+fieldset.output {
   display: grid;
   gap: 1rem;
   grid-template:
     "out" 1fr
     "btn" min-content
     / 1fr;
+}
+
+input.invalid {
+  text-decoration: underline 1px wavy #c44;
+}
+
+output {
+  white-space: pre-line;
 }

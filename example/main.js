@@ -1,7 +1,7 @@
 import { h1, p, a, span, button, on } from '../ellipsi.min.js'
 import ProfileForm from './ProfileForm.js'
 
-const ProfileContainer = span({ id: 'profile-container' })
+const ProfileContainer = span()
 
 const Document = [
   h1('Ellipsi Demo'),
