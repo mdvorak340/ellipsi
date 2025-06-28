@@ -22,9 +22,8 @@ export const tag = (name, ...children) => {
                     child instanceof Attr ? handleAttributeNode(htmlTag, child) :
                     child instanceof EventListener ? htmlTag.addEventListener(child.type, child.callback) :
                     child?.constructor === Object ? handleAttributeObject(htmlTag, child) :
-                    typeof child === 'string' ? document.createTextNode(child) :
                     child === null || child === undefined ? null :
-                    console.warn('unknown type given to function "tag": ', child))
+                    document.createTextNode(child))
     .filter((child) => child !== null && child !== undefined)
 
   htmlTag.replaceChildren(...safeChildren)
