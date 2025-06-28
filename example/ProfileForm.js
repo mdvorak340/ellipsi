@@ -52,8 +52,7 @@ export default function ProfileForm() {
 
   updateForm()
   return form({ class: 'profile-form' },
-    on('keydown', updateForm),
-    on('input', updateForm),
+    on('keydown input', updateForm),
     fieldset({ class: 'input' },
       legend('Input'),
       Name,

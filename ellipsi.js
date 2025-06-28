@@ -17,16 +17,17 @@
 export const tag = (name, ...children) => {
   const htmlTag = document.createElement(name)
 
-  const safeChildren = children
+  const sanitize = (dirty) => dirty
     .map((child) => child instanceof HTMLElement ? child :
                     child instanceof Attr ? handleAttributeNode(htmlTag, child) :
                     child instanceof EventListener ? htmlTag.addEventListener(child.type, child.callback) :
+                    child instanceof Array ? sanitize(child) :
                     child?.constructor === Object ? handleAttributeObject(htmlTag, child) :
                     child === null || child === undefined ? null :
                     document.createTextNode(child))
     .filter((child) => child !== null && child !== undefined)
 
-  htmlTag.replaceChildren(...safeChildren)
+  htmlTag.replaceChildren(...sanitize(children).flat())
   return htmlTag
 }
 
@@ -99,13 +100,13 @@ export class EventListener {
 }
 
 /**
- * Creates an event container.
- * @param {string} type The event type.
+ * Creates a number of event containers for a callback function.
+ * @param {string} types The event types separated by spaces.
  * @param {eventCallback} callback The callback function.
- * @returns {EventListener} The event container.
+ * @returns {[EventListener]} The event containers.
  */
-export const on = (type, callback) => {
-  return new EventListener(type, callback)
+export const on = (types, callback) => {
+  return types.split(' ').map((type) => new EventListener(type, callback))
 }
 
 export const h1 = (...x) => tag('h1', ...x)

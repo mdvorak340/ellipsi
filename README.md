@@ -125,19 +125,21 @@ can be of many different types.  These types will be handled as such:
 > </section>
 > ```
 
-### `on(type, callback)`
+### `on(types, callback)`
 
-`EventListener`s can be created using the `on(type, callback)` function.
-`type` is a string representing the event name, and `callback` is the callback
-function that takes one (optional) argument:  The triggering `Event`.
+`EventListener`s can be created using the `on(types, callback)` function.
+`types` is a string representing the triggering event name(s) separated by
+spaces, and `callback` is the callback function that takes one (optional)
+argument:  The triggering `Event`.
 
 ```js
 // Ellipsi code:
-const MeowButton = button('Click to meow', on('click', meow))
+const UserInputForm = form(FormContent, on('click keydown', handleInput))
 // Equivalent js code:
-const MeowButton = document.createElement('button')
-MeowButton.appendChild(document.createTextNode('Click to meow'))
-MeowButton.addEventListener('click', meow)
+const UserInputForm = document.createElement('form')
+UserInputForm.replaceChildren(...FormContent)
+UserInputForm.addEventListener('click', handleInput)
+UserInputForm.addEventListener('keydown', handleInput)
 ```
 
 ### `attr(key, ...values)`
