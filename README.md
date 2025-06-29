@@ -5,19 +5,20 @@ programmatically.
 
 ```js
 const MyButton = button(
-  'Click me!',                          // Add child elements,
-  on('click', () => alert('Clicked~')), // event listeners,
-  { id: 'my-button' },                  // and attributes.
+  'Click me!',                         // Add child elements,
+  on('click', () => alert('Clicked')), // event listeners,
+  { id: 'my-button' },                 // and attributes.
 )
 ```
 
 ## Using Ellipsi
 
 `Ellipsi` has one primary function: `tag(name, ...children)`.  This function
-is used to create elements of the type `HTMLElement` with clean syntax.
+is used to create elements of the type `HTMLElement` with a clean syntax.
 
 ```js
-const Heading = tag('h1', 'Tutorial') // <h1>Tutorial</h1>
+const Heading = tag('h1', 'Tutorial')
+// -> <h1>Tutorial</h1>
 ```
 
 Shortcuts are provided for most HTML elements, in the form:
@@ -27,10 +28,11 @@ Shortcuts are provided for most HTML elements, in the form:
 const h1 = (...x) => tag('h1', ...x)
 // Using shortcut:
 const Heading = h1('Tutorial')
+// -> <h1>Tutorial</h1>
 ```
 
 Many different things can be passed to `tag` as children --- text, attributes,
-event handlers, even other tags.
+event handlers, other tags, and arrays.
 
 ```js
 const MyTextInput = input({ id: 'my-text-input' })
@@ -70,15 +72,17 @@ import { tag, on, h1, p /* et cetera */ } from 'ellipsi.min.js'
 ### `tag(name, ...children)`
 
 While the `name` of the tag should be a string, the `children` given to `tag`
-can be of many different types.  These types will be handled as such:
+can be of many different types.  These will be handled as such:
 
-1.  `string`: Converted to `Text` and attached to the new tag as a child.
+4.  `HTMLElement`: Attached to the new tag as a child.
 2.  `Attr`: Cloned and attached to the new tag as an attribute.
 2.  `EventListener`: Attached to the new tag using
     `HTMLElement.addEventListener()`.
 3.  `Object`: Parsed as a collection of key/value pairs representing
     attributes (e.g. `{ id: 'my-id', class: 'my-class' }`).
-4.  `HTMLElement`: Attached to the new tag as a child.
+1.  `Array`: Flattened and handled as above.
+1.  All else will be converted to `Text` and attached to the new tag as a
+    child.
 
 > [!WARNING]
 >
@@ -94,6 +98,9 @@ can be of many different types.  These types will be handled as such:
 >   p('Heya!  I am ', MyName), // Instead, it will be moved here
 > )
 > ```
+>
+> The above results in:
+>
 > ```html
 > <section>
 >   <h1>About </h1>
@@ -104,10 +111,10 @@ can be of many different types.  These types will be handled as such:
 > An `HTMLElement` can be cloned with `HTMLElement.cloneNode(true)`, though
 > this does *not* preserve event listeners, and so is often bad practice.
 >
-> To avoid this, it is best to turn reusable components into functions that
-> return a new element entirely.  Reserve constant elements for times when you
-> intead to be referencing the same exact instance of an element in different
-> places, such as an input in a form who's value will be used later.
+> It is best to turn reusable components into functions that return a new
+> element entirely.  Reserve constant elements for times when you intend to be
+> referencing an exact instance of an element in different places, such as an
+> input in a form who's value will be used later.
 >
 > ```js
 > // Proper reusable component:
@@ -118,6 +125,9 @@ can be of many different types.  These types will be handled as such:
 >   p('Heya!  I am ', MyName()), // Unique element
 > )
 > ```
+>
+> The above results in:
+>
 > ```html
 > <section>
 >   <h1>About <span class="fancy">Mozzie</span></h1>
@@ -166,8 +176,8 @@ Link.setAttributeNode(href.cloneNode())
 
 > [!NOTE]
 >
-> Typically, it is expected for you to use JSON to append attritubes instead of
-> the `attr` function.
+> You can also use JSON to append attritubes instead of the `attr`
+> function.
 >
 > ```js
 > // Ellipsi code (with JSON attributes):
