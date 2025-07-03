@@ -1,14 +1,38 @@
-import { div, h2, ul, li, a, p } from "../ellipsi.min.js"
+import { div, h2, ul, li, a, p, shadow, sheet, slot } from "../ellipsi.js"
+import styleReset from "./styleReset.js"
 
-export default function Profile(name, bio, pronouns, link) {
-  const linkDisplay = link?.replace('https://', '')
+// Attached to a shadow root
+const profileStyles = sheet({
+  ul: {
+    margin: 0,
+  },
+  li: {
+    display: 'inline',
+  },
+  'li + li::before': {
+    content: '" ∘ "',
+  },
+})
 
-  return div({ class: 'profile' },
-    h2(name || 'UNNAMED USER'),
-    ul({ class: 'inline' },
-      pronouns ? li(pronouns) : null,
-      link ? li(a(linkDisplay, { href: link })) : null,
+export default function (name, bio, pronouns, link) {
+  // Remove protocol from link name if the protocol is https
+  const linkName = link?.replace('https://', '')
+
+  // Parse the bio string as rich HTML
+  const RichBio = p({ slot: 'bio' })
+  RichBio.innerHTML = bio
+
+  return div(
+    RichBio,  // Hidden by shadow DOM and then inserted into a slot
+    shadow(
+      styleReset,
+      profileStyles,
+      h2(name || 'Unnamed User'),
+      ul(
+        pronouns ? li(pronouns) : null,
+        link ? li(a(linkName, { href: link })) : null,
+      ),
+      slot({ name: RichBio.slot }),
     ),
-    p(bio),
   )
 }

@@ -4,13 +4,9 @@
   "description": "Simple HTML Tag assembler.",
   "main": "ellipsi.js",
   "scripts": {
-    "mini": "npx minify ellipsi.js > ellipsi.min.js"
   },
   "author": "Mozzie Dvorak <mdvorak.personal@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "minify": "^14.0.0"
-  },
   "keywords": [
     "HTMLElement"
   ],

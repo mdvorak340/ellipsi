@@ -54,18 +54,15 @@ Install the library using `npm` with:
 
     npm install ellipsi
 
-Alternatively, download the library directly from
-[here](https://raw.githubusercontent.com/mdvorak340/ellipsi/refs/heads/main/ellipsi.js)
-and the minimized version from
-[here](https://raw.githubusercontent.com/mdvorak340/ellipsi/refs/heads/main/ellipsi.min.js).
-
 Then, in your JavaScript module:
 
 ```js
-import { tag, on, h1, p /* et cetera */ } from 'ellipsi.js'
-// Minimized version:
-import { tag, on, h1, p /* et cetera */ } from 'ellipsi.min.js'
+import { tag, on, h1, p /* et cetera */ } from 'ellipsi'
 ```
+
+Alternatively, download the library directly from
+[here](https://raw.githubusercontent.com/mdvorak340/ellipsi/refs/heads/main/ellipsi.js)
+and link to it locally.
 
 ## Function Reference
 
@@ -78,10 +75,12 @@ can be of many different types.  These will be handled as such:
 2.  `Attr`: Cloned and attached to the new tag as an attribute.
 2.  `EventListener`: Attached to the new tag using
     `HTMLElement.addEventListener()`.
-3.  `Object`: Parsed as a collection of key/value pairs representing
+1.  `Shadow`: Attached to the new tag using
+    `HTMLElement.attachShadow({ mode: 'open' })`.
+2.  `Object`: Parsed as a collection of key/value pairs representing
     attributes (e.g. `{ id: 'my-id', class: 'my-class' }`).
-1.  `Array`: Flattened and handled as above.
-1.  All else will be converted to `Text` and attached to the new tag as a
+3.  `Array`: Looped through and handled same as other children.
+4.  All else will be converted to `Text` and attached to the new tag as a
     child.
 
 > [!WARNING]
@@ -137,7 +136,8 @@ can be of many different types.  These will be handled as such:
 
 ### `on(types, callback)`
 
-`EventListener`s can be created using the `on(types, callback)` function.
+`EventListener`s can be created using the `on(types, callback)` function, and
+can be attached to `HTMLElement`s via `tag`.
 `types` is a string representing the triggering event name(s) separated by
 spaces, and `callback` is the callback function that takes one (optional)
 argument:  The triggering `Event`.
@@ -186,6 +186,118 @@ Link.setAttributeNode(href.cloneNode())
 >   { href: 'https://www.spidersge.org' },
 > )
 > ```
+
+### `sheet(...styleObjs)`
+
+Create a `CSSStyleSheet` in JavaScript.  `styleObjs` is a list of JSON objects
+that represents CSS.  This is best explained via example:
+
+```js
+const myStyleSheet = sheet({
+  // Quote keys to pass any text as a key
+  '*': {
+    padding: 0,
+    margin: 0,
+    // camelCase property keys will be converted to kebab-case
+    boxSizing: 'border-box',
+  },
+  p: {
+    marginBlock: '1rem',
+  },
+  '@keyframes load': {
+    // Nest blocks where normal CSS nests block
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 0,
+    },
+  },
+  '*.load': {
+    animation: 'load 1s',
+  },
+})
+
+document.adoptedStyleSheets.push(myStyleSheet)
+```
+
+It is not normal to create document-level stylesheets like this, unless you
+are determined to keep all code in JavaScript.  This is function is intended to
+be used in conjuction with shadow roots to create encapsulated styles.
+
+> [!WARN]
+>
+> `CSSStyleSheet` is a new feature in JavaScript at the time of writing
+> (baseline 2023, current time 2025) so you may want to use other methods until
+> the API is mature and more people have updated their browsers.
+
+> [!NOTE]
+>
+> There is currently no way to represent CSS at-rules like `@import` or
+> `@charset` via this function.
+
+### `shadow(...components)`
+
+> [!WARN]
+>
+> Shadow roots are what I would consider an "advanced topic" for most users.
+> They may be difficult to use with this library, because this library stays
+> very true to their default behavior and their default behavior is difficult
+> to use.
+
+`Shadow`s can be created using the `shadow(...components)` function, and can be
+attached to `HTMLElement`s via `tag`.  This
+function is similar to the `tag` function in that it takes many different
+types (and handles them in the same way), but differs in that shadow roots can
+have their own stylesheets (`CSSStyleSheet`s) and
+can*not* have attributes or event listeners.  Attributes and event listeners
+should be attached to whatever host element the shadow root is attached to.
+
+```js
+const documentStyles = sheet({
+  p: {
+    color: 'red',
+  },
+})
+
+const shadowStyles = sheet({
+  p: {
+    fontWeight: 'bold',
+  },
+})
+
+document.adoptedStyleSheets.push(documentStyles)
+document.body.replaceChildren(
+  p('I am not in the shadow DOM or in the slot'),
+  span(
+    p('I am not in the shadow DOM, but *am* in the slot'),
+    // As is normal shadow root behavior, the shadow will
+    // override non-shadow elements.  Non-shadow elements
+    // will be hidden unless they are placed in a slot
+    shadow(
+      shadowStyles,
+      p('I am in the shadow DOM before the slot'),
+      slot(),
+      p('I am in the shadow DOM after the slot'),
+    ),
+  ),
+)
+```
+
+The above results in:
+
+```html
+<p>I am not in the shadow DOM or in the slot</p>
+<span>
+  #shadow-root (open)
+    <p>I am in the shadow DOM before the slot</p>
+    <slot> (contents)
+      #reference
+        <p>I am not in the shadow DOM, but *am* in the slot</p>
+    </slot>
+    <p>I am in the shadow DOM after the slot</p>
+</span>
+```
 
 ## Example
 

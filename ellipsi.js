@@ -2,32 +2,50 @@
  * Creates an HTML tag.  Many helper functions are provided as shortcuts for
  * creating commmon elements.
  * @param {string} name The tag name.
- * @param {...string | HTMLElement | Attr | EventListener | Object} children
+ * @param {...string | HTMLElement | Attr | EventListener | Shadow | Object | Array} children
  * The children of the tag.  Handles different types differently:
  *
- * 1. `string`s are converted to `Text` and appended to the tag.
- * 2. `HTMLElement`s are appended as is (Not cloned).
- * 3. `Attr`s are cloned and then attached to the tag itself.
- * 4. `EventListener`s are attached to the tag itself.
- * 5. `Object`s are parsed as lists of HTML attribute key/value pairs and
+ * 1. `HTMLElement`s are appended as is (Not cloned).
+ * 2. `Attr`s are cloned and then attached to the tag itself.
+ * 3. `EventListener`s are attached to the tag itself.
+ * 4. `Shadow`s are attached to the tag itself.
+ * 5. `Array`s are iterated through and handled as other children.
+ * 4. `Object`s are parsed as JSON objects of HTML attributes and
  *    attached to the tag itself.
+ * 5. All else is converted to `Text` and appended to the tag.
  *
  * @returns {HTMLElement} The created HTML tag.
  */
 export const tag = (name, ...children) => {
   const htmlTag = document.createElement(name)
 
-  const sanitize = (dirty) => dirty
-    .map((child) => child instanceof HTMLElement ? child :
-                    child instanceof Attr ? handleAttributeNode(htmlTag, child) :
-                    child instanceof EventListener ? htmlTag.addEventListener(child.type, child.callback) :
-                    child instanceof Array ? sanitize(child) :
-                    child?.constructor === Object ? handleAttributeObject(htmlTag, child) :
-                    child === null || child === undefined ? null :
-                    document.createTextNode(child))
-    .filter((child) => child !== null && child !== undefined)
+  const process = (unprocessedChildren) => {
+    for (let i = 0; i < unprocessedChildren.length; i++) {
+      const child = unprocessedChildren[i]
+      if (child instanceof HTMLElement) {
+        htmlTag.appendChild(child)
+      } else if (child instanceof Attr) {
+        handleAttributeNode(htmlTag, child)
+      } else if (child instanceof EventListener) {
+        htmlTag.addEventListener(child.type, child.callback)
+      } else if (child instanceof Shadow) {
+        const shadowRoot = htmlTag.attachShadow({ mode: 'open' })
+        shadowRoot.adoptedStyleSheets = child.sheets
+        for (let k = 0; k < child.children.length; k++) {
+          const childChild = child.children[k]
+          shadowRoot.appendChild(childChild)
+        }
+      } else if (child instanceof Array) {
+        process(child)
+      } else if (child?.constructor === Object) {
+        handleAttributeObject(htmlTag, child)
+      } else if (child !== null && child !== undefined) {
+        htmlTag.appendChild(document.createTextNode(child))
+      }
+    }
+  }
 
-  htmlTag.replaceChildren(...sanitize(children).flat())
+  process(children)
   return htmlTag
 }
 
@@ -53,7 +71,10 @@ const handleAttributeNode = (htmlTag, attrNode) => {
  * @returns {undefined}
  */
 const handleAttributeObject = (htmlTag, attrObj) => {
-  Object.keys(attrObj).forEach((key) => {
+  const keys = Object.keys(attrObj)
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
     const newValue = attrObj[key] instanceof Array ? attrObj[key].join(' ') :
                      attrObj[key]
 
@@ -63,7 +84,7 @@ const handleAttributeObject = (htmlTag, attrObj) => {
     } else {
       htmlTag.setAttribute(key, newValue)
     }
-  })
+  }
 }
 
 /**
@@ -86,7 +107,7 @@ export const attr = (key, ...values) => {
 
 /**
  * An event container.  Serves only to represent a type/callback pair for a
- * potential `tag.addEventListener(type, callback)`.
+ * potential future `HTMLElement.addEventListener()`.
  */
 export class EventListener {
   /**
@@ -107,6 +128,105 @@ export class EventListener {
  */
 export const on = (types, callback) => {
   return types.split(' ').map((type) => new EventListener(type, callback))
+}
+
+/**
+ * Creates a CSS stylesheet.
+ * @param  {...Object} styleObjs A list of JSON objects representing CSS style
+ * blocks, e.g. `p: { color: 'red' }`.
+ * @returns {CSSStyleSheet} The created sheet.
+ */
+export const sheet = (...styleObjs) => {
+  const stylesheet = new CSSStyleSheet()
+
+  for (let i = 0; i < styleObjs.length; i++) {
+    const styleObj = styleObjs[i]
+    const keys = Object.keys(styleObj)
+    for (let k = 0; k < keys.length; k++) {
+      const key = keys[k]
+      stylesheet.insertRule(cssBlock(key, styleObj[key]))
+    }
+  }
+
+  return stylesheet
+}
+
+/**
+ * Creates a CSS block.
+ * @param {string} title The title of the block, e.g. a CSS selector like
+ * `h1.error` or `@keyframes fadein`.
+ * @param {Object} declarations JSON object of CSS declarations, e.g.
+ * `{ color: red }` or `{ from: { opacity: 0 }, to: { opacity: 1 } }`.
+ * @returns {string} The created CSS block as a string.
+ */
+const cssBlock = (title, declarations) => {
+  let cssString = title + '{'
+  const keys = Object.keys(declarations)
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    const value = declarations[key]
+
+    cssString += value?.constructor === Object ? cssBlock(key, value) :
+                 toCssCase(key) + ':' + value + ';'
+  }
+
+  cssString += '}'
+  return cssString
+}
+
+/**
+ * Converts a string to CSS case (e.g. fontWeight -> font-weight).
+ * @param {string} string The non-CSS-friendly string.
+ * @returns {string} The CSS friendly string.
+ */
+const toCssCase = (string) => {
+  return string.replaceAll(/[A-Z]/g, "-$&").toLowerCase()
+}
+
+/**
+ * A shadow root container.  Serves only to represent the components that make
+ * up a potential future `HTMLElement.attachShadow()`.
+ */
+export class Shadow {
+  /**
+   * @param {[HTMLElement | Text]} children The children of the shadow root.
+   * @param {[CSSStyleSheet]} sheets The CSS stylesheets adopted by this shadow
+   * root.
+   */
+  constructor(children, sheets) {
+    this.children = children
+    this.sheets = sheets
+  }
+}
+
+/**
+ * Creates a shadow root that can be attached to an element.
+ * @param  {...CSSStyleSheet | HTMLElement | Array | string} components
+ * The components that the shadow root contains.
+ * @returns {Shadow} The created shadow root.
+ */
+export const shadow = (...components) => {
+  let children = []
+  let sheets = []
+
+  const process = (unprocessedComponents) => {
+    for (let i = 0; i < unprocessedComponents.length; i++) {
+      const component = unprocessedComponents[i]
+      if (component instanceof CSSStyleSheet) {
+        sheets.push(component)
+      } else if (component instanceof HTMLElement) {
+        children.push(component)
+      } else if (component instanceof Array) {
+        process(component)
+      } else if (component !== null && component !== undefined) {
+        children.push(document.createTextNode(component))
+      }
+    }
+  }
+
+  process(components)
+  return new Shadow(children, sheets)
 }
 
 export const h1 = (...x) => tag('h1', ...x)
@@ -168,3 +288,4 @@ export const option = (...x) => tag('option', ...x)
 export const kbd = (...x) => tag('kbd', ...x)
 export const time = (...x) => tag('time', ...x)
 export const canvas = (...x) => tag('canvas', ...x)
+export const slot = (...x) => tag('slot', ...x)
