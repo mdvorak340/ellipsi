@@ -27,11 +27,6 @@ const profileFormStyles = sheet({
   'input.invalid': {
     textDecoration: 'underline 1px wavy #c44',
   },
-  'fieldset.output': {
-    display: 'grid',
-    gap: '1rem',
-    gridTemplate: '"out" 1fr "btn" min-content / 1fr',
-  },
 })
 
 export default function () {
@@ -55,13 +50,6 @@ export default function () {
 
   // Form outputs
   const ResultOut = output()
-
-  // Form buttons
-  const SaveResultBtn = button(
-    'Copy as HTML',
-    { type: 'button' },
-    on('click', () => navigator.clipboard.writeText(ResultOut.innerHTML)),
-  )
 
   // Event handler to update the form based on use input
   const updateForm = () => {
@@ -100,10 +88,8 @@ export default function () {
           LinkIn,
         ),
         fieldset(
-          { class: 'output' },
           legend('Output'),
           ResultOut,
-          SaveResultBtn,
         ),
       ),
     ),

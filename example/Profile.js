@@ -1,4 +1,4 @@
-import { div, h2, ul, li, a, p, shadow, sheet, slot } from "../ellipsi.js"
+import { div, h2, ul, li, a, p, shadow, sheet, slot, hr } from "../ellipsi.js"
 import styleReset from "./styleReset.js"
 
 // Attached to a shadow root
@@ -10,7 +10,10 @@ const profileStyles = sheet({
     display: 'inline',
   },
   'li + li::before': {
-    content: '" ∘ "',
+    content: '" ∘ "', // Quotations needed in CSS must be double-quoted
+  },
+  hr: {
+    marginBlock: '0.5rem',
   },
 })
 
@@ -32,6 +35,7 @@ export default function (name, bio, pronouns, link) {
         pronouns ? li(pronouns) : null,
         link ? li(a(linkName, { href: link })) : null,
       ),
+      hr(),
       slot({ name: RichBio.slot }),
     ),
   )
