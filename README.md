@@ -225,7 +225,7 @@ It is not normal to create document-level stylesheets like this, unless you
 are determined to keep all code in JavaScript.  This is function is intended to
 be used in conjuction with shadow roots to create encapsulated styles.
 
-> [!WARN]
+> [!WARNING]
 >
 > `CSSStyleSheet` is a new feature in JavaScript at the time of writing
 > (baseline 2023, current time 2025) so you may want to use other methods until
@@ -238,7 +238,7 @@ be used in conjuction with shadow roots to create encapsulated styles.
 
 ### `shadow(...components)`
 
-> [!WARN]
+> [!WARNING]
 >
 > Shadow roots are what I would consider an "advanced topic" for most users.
 > They may be difficult to use with this library, because this library stays
