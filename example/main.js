@@ -1,3 +1,8 @@
+// Warning: the use of shadow roots in this example is overkill but good as a
+// demonstration.  When I first made this example, the components Profile
+// and ProfileForm simply where given classes, and then those classes where
+// styled in a CSS file along with everything else.
+
 import { h1, p, a, span, button, on, sheet } from '../ellipsi.js'
 import ProfileForm from './ProfileForm.js'
 import styleReset from './styleReset.js'
