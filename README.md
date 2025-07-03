@@ -233,8 +233,8 @@ be used in conjuction with shadow roots to create encapsulated styles.
 
 > [!NOTE]
 >
-> There is currently no way to represent CSS at-rules like `@import` or
-> `@charset` via this function.
+> There is currently no way to represent single-line CSS at-rules like
+> `@import` or `@charset` via this function.
 
 ### `shadow(...components)`
 
