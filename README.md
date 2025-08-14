@@ -31,6 +31,15 @@ const Heading = h1('Tutorial')
 // -> <h1>Tutorial</h1>
 ```
 
+Since this a common pattern, there is a helper function provided:
+
+```js
+const h1 = shortTag('h1')
+const Heading = h1('Tutorial')
+```
+
+---
+
 Many different things can be passed to `tag` as children --- text, attributes,
 event handlers, other tags, and arrays.
 
@@ -152,6 +161,17 @@ UserInputForm.addEventListener('click', handleInput)
 UserInputForm.addEventListener('keydown', handleInput)
 ```
 
+### `shortTag(name, ...x)`
+
+Shortcut functions can be created using the `shortTag(name, ...x)` function,
+and then can be used to create `HTMLElement`s using the `tag` function
+indirectly.
+
+```js
+const h1 = shortTag('h1')
+const checkbox = shortTag('input', { type: 'checkbox' })
+```
+
 ### `attr(key, value)`
 
 If you don't like JavaScript Object Notation or need to use JavaScript's
@@ -211,7 +231,7 @@ const shadowStyles = tag('style',
   'p { font-weight: bold; }'
 )
 
-document.adoptedStyleSheets.push(documentStyles.sheet)
+document.head.appendChild(documentStyles)
 document.body.replaceChildren(
   p('I am not in the shadow DOM or in the slot'),
   span(
@@ -220,7 +240,7 @@ document.body.replaceChildren(
     // override non-shadow elements.  Non-shadow elements
     // will be hidden unless they are placed in a slot
     shadow(
-      shadowStyles.sheet,
+      shadowStyles,
       p('I am in the shadow DOM before the slot'),
       slot(),
       p('I am in the shadow DOM after the slot'),
@@ -236,9 +256,8 @@ The above results in:
 <span>
   #shadow-root (open)
     <p>I am in the shadow DOM before the slot</p>
-    <slot> (contents)
-      #reference
-        <p>I am not in the shadow DOM, but *am* in the slot</p>
+    <slot>
+      <p>I am not in the shadow DOM, but *am* in the slot</p>
     </slot>
     <p>I am in the shadow DOM after the slot</p>
 </span>
