@@ -185,55 +185,6 @@ Link.setAttributeNode(href.cloneNode())
 > )
 > ```
 
-### `sheet(...styleObjs)`
-
-Create a `CSSStyleSheet` in JavaScript.  `styleObjs` is a list of JSON objects
-that represents CSS.  This is best explained via example:
-
-```js
-const myStyleSheet = sheet({
-  // Quote keys to pass any text as a key
-  '*': {
-    padding: 0,
-    margin: 0,
-    // camelCase property keys will be converted to kebab-case
-    boxSizing: 'border-box',
-  },
-  p: {
-    marginBlock: '1rem',
-  },
-  '@keyframes load': {
-    // Nest blocks where normal CSS nests block
-    from: {
-      opacity: 0,
-    },
-    to: {
-      opacity: 0,
-    },
-  },
-  '*.load': {
-    animation: 'load 1s',
-  },
-})
-
-document.adoptedStyleSheets.push(myStyleSheet)
-```
-
-It is not normal to create document-level stylesheets like this, unless you
-are determined to keep all code in JavaScript.  This is function is intended to
-be used in conjuction with shadow roots to create encapsulated styles.
-
-> [!WARNING]
->
-> `CSSStyleSheet` is a new feature in JavaScript at the time of writing
-> (baseline 2023, current time 2025) so you may want to use other methods until
-> the API is mature and more people have updated their browsers.
-
-> [!NOTE]
->
-> There is currently no way to represent single-line CSS at-rules like
-> `@import` or `@charset` via this function.
-
 ### `shadow(...components)`
 
 > [!WARNING]
@@ -252,19 +203,15 @@ can*not* have attributes or event listeners.  Attributes and event listeners
 should be attached to whatever host element the shadow root is attached to.
 
 ```js
-const documentStyles = sheet({
-  p: {
-    color: 'red',
-  },
-})
+const documentStyles = tag('style',
+  'p { color: red; }'
+)
 
-const shadowStyles = sheet({
-  p: {
-    fontWeight: 'bold',
-  },
-})
+const shadowStyles = tag('style',
+  'p { font-weight: bold; }'
+)
 
-document.adoptedStyleSheets.push(documentStyles)
+document.adoptedStyleSheets.push(documentStyles.sheet)
 document.body.replaceChildren(
   p('I am not in the shadow DOM or in the slot'),
   span(
@@ -273,7 +220,7 @@ document.body.replaceChildren(
     // override non-shadow elements.  Non-shadow elements
     // will be hidden unless they are placed in a slot
     shadow(
-      shadowStyles,
+      shadowStyles.sheet,
       p('I am in the shadow DOM before the slot'),
       slot(),
       p('I am in the shadow DOM after the slot'),
