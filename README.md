@@ -152,13 +152,11 @@ UserInputForm.addEventListener('click', handleInput)
 UserInputForm.addEventListener('keydown', handleInput)
 ```
 
-### `attr(key, ...values)`
+### `attr(key, value)`
 
 If you don't like JavaScript Object Notation or need to use JavaScript's
 built-in `Attr` class to represent your HTML attributes, `attr` is provided
 as shorthand.
-
-If multiple values are given for an attribute, they will be joined with spaces.
 
 ```js
 // Ellipsi code:

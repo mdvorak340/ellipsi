@@ -90,12 +90,12 @@ const handleAttributeObject = (htmlTag, attrObj) => {
 /**
  * Creates an HTML attribute.
  * @param {string} key The attribute name.
- * @param {...string} values The attribute value(s).
+ * @param {any} value The attribute value.
  * @returns {Attr} The attribute node.
  */
-export const attr = (key, ...values) => {
+export const attr = (key, value) => {
   const node = document.createAttribute(key)
-  node.value = values.join(' ')
+  node.value = value
   return node
 }
 
