@@ -2,6 +2,7 @@ import { tag, on, shadow, shortTag, p, h2 } from '../ellipsi.js'
 
 // Create shortcuts with shortTag
 const Para = shortTag('p')
+// JSON-style objects become HTML attributes
 const FormButton = shortTag('button', { type: 'button' })
 
 // Create styles to apply to a shadow root
@@ -11,6 +12,7 @@ const shadowStyles = tag('style',
 
 // Create form inputs
 const NameInput = tag('input', { type: 'text', placeholder: 'Your name...' })
+// Use on to create event listeners
 const ShowNameButton = FormButton('Greet', on('click', () => alert('Hello, ' + NameInput.value)))
 
 const Doc = [
