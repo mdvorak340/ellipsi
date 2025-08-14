@@ -1,10 +1,9 @@
 {
   "name": "ellipsi",
-  "version": "2.12.1",
+  "version": "3.0.0",
   "description": "Simple HTML Tag assembler.",
   "main": "ellipsi.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "Mozzie Dvorak <mdvorak.personal@gmail.com>",
   "license": "MIT",
   "keywords": [
