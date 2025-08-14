@@ -1,17 +1,18 @@
 # Ellipsi Changelog
 
-## 3.0.0 on 2025-07-02
+## 3.0.0 on 2025-08-14
 
 ### Added
 
 - `Shadow`, a type that contains potential shadow roots
 - `shadow`, a function that builds `Shadow`s
-- `sheet`, a function that builds `CSSStyleSheet`s; a `CSSStyleSheet` can be
-  attached to a shadow root via the `shadow` function
+- `shortTag`, a function that builds shortcut functions
 
 ### Changed
 
 - `forEach` loops to `for(let i = 0;...)` loops for performance
+- `attr` function no longer takes a variable number of arguments
+- Shortcut functions are now created with `shortTag`
 
 ### Removed
 
