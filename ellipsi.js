@@ -100,7 +100,7 @@ export const attr = (key, value) => {
 }
 
 /**
- * @callback eventCallback
+ * @callback EventCallback
  * @param {Event} [event] The triggering event, if any.
  * @returns {undefined}
  */
@@ -112,7 +112,7 @@ export const attr = (key, value) => {
 export class EventListener {
   /**
    * @param {string} type The event type.
-   * @param {eventCallback} callback The callback function.
+   * @param {EventCallback} callback The callback function.
    */
   constructor(type, callback) {
     this.type = type
@@ -123,8 +123,8 @@ export class EventListener {
 /**
  * Creates a number of event containers for a callback function.
  * @param {string} types The event types separated by spaces.
- * @param {eventCallback} callback The callback function.
- * @returns {[EventListener]} The event containers.
+ * @param {EventCallback} callback The callback function.
+ * @returns {EventListener[]} The event containers.
  */
 export const on = (types, callback) => {
   return types.split(' ').map((type) => new EventListener(type, callback))
@@ -136,8 +136,8 @@ export const on = (types, callback) => {
  */
 export class Shadow {
   /**
-   * @param {[HTMLElement | Text]} children The children of the shadow root.
-   * @param {[CSSStyleSheet]} sheets The CSS stylesheets adopted by this shadow
+   * @param {(HTMLElement | Text)[]} children The children of the shadow root.
+   * @param {CSSStyleSheet[]} sheets The CSS stylesheets adopted by this shadow
    * root.
    */
   constructor(children, sheets) {
@@ -148,31 +148,31 @@ export class Shadow {
 
 /**
  * Creates a shadow root that can be attached to an element.
- * @param {...CSSStyleSheet | HTMLElement | Text | Array | string} components
- * The components that the shadow root contains.
+ * @param {...CSSStyleSheet | HTMLElement | Text | Array | string} children
+ * The children that the shadow root contains.
  * @returns {Shadow} The created shadow root.
  */
-export const shadow = (...components) => {
-  let children = []
+export const shadow = (...children) => {
+  let components = []
   let sheets = []
 
-  const process = (unprocessedComponents) => {
-    for (let i = 0; i < unprocessedComponents.length; i++) {
-      const component = unprocessedComponents[i]
-      if (component instanceof CSSStyleSheet) {
-        sheets.push(component)
-      } else if (component instanceof HTMLElement || component instanceof Text) {
-        children.push(component)
-      } else if (component instanceof Array) {
-        process(component)
-      } else if (component !== null && component !== undefined) {
-        children.push(document.createTextNode(component))
+  const process = (unprocessedChildren) => {
+    for (let i = 0; i < unprocessedChildren.length; i++) {
+      const child = unprocessedChildren[i]
+      if (child instanceof CSSStyleSheet) {
+        sheets.push(child)
+      } else if (child instanceof HTMLElement || child instanceof Text) {
+        components.push(child)
+      } else if (child instanceof Array) {
+        process(child)
+      } else if (child !== null && child !== undefined) {
+        components.push(document.createTextNode(child))
       }
     }
   }
 
-  process(components)
-  return new Shadow(children, sheets)
+  process(children)
+  return new Shadow(components, sheets)
 }
 
 /**

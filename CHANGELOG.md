@@ -1,5 +1,11 @@
 # Ellipsi Changelog
 
+## 3.0.1 on 2025-09-12
+
+### Fixed
+
+- Properly documented types via JSDoc
+
 ## 3.0.0 on 2025-08-14
 
 ### Added
