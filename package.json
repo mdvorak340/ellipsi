@@ -1,6 +1,6 @@
 {
   "name": "ellipsi",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Simple HTML Tag assembler.",
   "main": "ellipsi.js",
   "scripts": {},
